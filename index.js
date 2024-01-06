@@ -3,11 +3,6 @@ import {
   createAudioPlayer,
   NoSubscriberBehavior,
   createAudioResource,
-  StreamType,
-  entersState,
-  AudioPlayerStatus,
-  VoiceConnectionStatus,
-  getVoiceConnection,
 } from "@discordjs/voice";
 import {
   ChannelType,
@@ -20,7 +15,6 @@ import {
 } from "discord.js";
 import "dotenv/config";
 import { createReadStream } from "fs";
-import { join } from "path";
 
 const player = createAudioPlayer({
   behaviors: {
@@ -69,7 +63,7 @@ client.on("ready", async () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-class timeout {
+class Timeout {
   static set = (cb, delay = 1000) => {
     this.timer = setTimeout(() => {
       console.log("timeout");
@@ -81,7 +75,7 @@ class timeout {
   };
 }
 
-class interval {
+class Interval {
   static set = (cb) => {
     this.timer = setInterval(() => {
       console.log("interval");
@@ -116,9 +110,9 @@ client.on("interactionCreate", async (interaction) => {
         delay = (50 + (minute - 50)) * (1000 * 60);
       }
 
-      timeout.set(() => {
+      Timeout.set(() => {
         playSong();
-        interval.set(() => {
+        Interval.set(() => {
           playSong();
         });
       }, delay);
@@ -137,8 +131,8 @@ client.on("interactionCreate", async (interaction) => {
       voiceChannel,
       interaction.guild.voiceAdapterCreator
     );
-    timeout.clear();
-    interval.clear();
+    Timeout.clear();
+    Interval.clear();
     connection.destroy();
     await interaction.reply("aduh kenak usir");
   }
@@ -156,7 +150,7 @@ const main = async () => {
 
     await rest.put(
       Routes.applicationGuildCommands(
-        "1192548449011372203",
+        process.env["CLIENT_ID"],
         "1016695172718923776"
       ),
       {
