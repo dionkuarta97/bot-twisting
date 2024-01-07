@@ -80,7 +80,7 @@ class Interval {
     this.timer = setInterval(() => {
       console.log("interval");
       cb();
-    }, 1 * (1000 * 60));
+    }, 1 * (1000 * 60 * 60));
   };
   static clear = () => {
     clearInterval(this.timer);
@@ -115,7 +115,7 @@ client.on("interactionCreate", async (interaction) => {
         Interval.set(() => {
           playSong();
         });
-      }, 1000);
+      }, delay);
 
       connection.subscribe(player);
       await interaction.reply(
